@@ -2,6 +2,12 @@
 
 var utils = require('./utils');
 
+function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
 function makeResponse(result, config) {
   return {
     status: result[0],
@@ -13,7 +19,8 @@ function makeResponse(result, config) {
 
 function handleRequest(mockAdapter, resolve, reject, config) {
   if (config.baseURL && config.url.substr(0, config.baseURL.length) === config.baseURL) {
-    config.url = config.url.slice(config.baseURL ? config.baseURL.length : 0);
+    //config.url = config.url.slice(config.baseURL ? config.baseURL.length : 0);
+    config.url = combineURLs(config.baseURL, config.url);
   }
   config.adapter = null;
 
